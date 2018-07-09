@@ -1,8 +1,8 @@
 package com.libstar.kb.spider.sp.cspd.perio;
 
 import com.libstar.kb.spider.sp.cspd.entity.YearTreeEntity;
-import com.libstar.kb.spider.sp.cspd.service.YearTreeEntityService;
 import com.libstar.kb.spider.sp.cspd.service.ArticleEntityService;
+import com.libstar.kb.spider.sp.cspd.service.YearTreeEntityService;
 import com.libstar.kb.spider.sp.cspd.utils.UrlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.downloader.HttpClientDownloader;
-import us.codecraft.webmagic.proxy.Proxy;
 import us.codecraft.webmagic.proxy.SimpleProxyProvider;
 import us.codecraft.webmagic.scheduler.RedisScheduler;
 import us.codecraft.webmagic.utils.HttpConstant;
@@ -66,10 +65,10 @@ public class PerioContentTask {
         Spider spider = Spider.create(processor).addPipeline(pipline).setScheduler(redisScheduler);
         spider.addUrl("http://www.wanfangdata.com.cn/perio/articleList.do?page=1&pageSize=100&issue_num=1&publish_year=2018&perio_id=cwycnyy");
 
-        HttpClientDownloader downloader = new HttpClientDownloader();
+        //添加代理
+       /* HttpClientDownloader downloader = new HttpClientDownloader();
         downloader.setProxyProvider(SimpleProxyProvider.from(new Proxy("127.0.0.1", 8888)));
-
-        spider.setDownloader(downloader);
+        spider.setDownloader(downloader);*/
 
 
         //第二步: 添加请求 Request 到待爬取队列
