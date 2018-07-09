@@ -10,6 +10,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.downloader.HttpClientDownloader;
+import us.codecraft.webmagic.proxy.Proxy;
+import us.codecraft.webmagic.proxy.SimpleProxyProvider;
 import us.codecraft.webmagic.scheduler.RedisScheduler;
 import us.codecraft.webmagic.utils.HttpConstant;
 
@@ -61,12 +64,20 @@ public class PerioContentTask {
     public void task() {
         //第一步: 添加 processor 和 pipline, Scheduler
         Spider spider = Spider.create(processor).addPipeline(pipline).setScheduler(redisScheduler);
+        spider.addUrl("http://www.wanfangdata.com.cn/perio/articleList.do?page=1&pageSize=100&issue_num=1&publish_year=2018&perio_id=cwycnyy");
+
+        HttpClientDownloader downloader = new HttpClientDownloader();
+        downloader.setProxyProvider(SimpleProxyProvider.from(new Proxy("127.0.0.1", 8888)));
+
+        spider.setDownloader(downloader);
+
+
         //第二步: 添加请求 Request 到待爬取队列
         addRequest(spider);
 
         //第三步: 开启爬虫
 
-        spider.thread(5).run();
+        spider.thread(3).run();
         log.info("-->> end <<抓取 期刊内容 的任务完毕>>");
 
     }
@@ -81,7 +92,7 @@ public class PerioContentTask {
         List<String> perioIdList = articleEntityService.findPageByFlag(0, 20, "1");
 
         if (perioIdList.size() == 0) {
-            log.info("<<没有待爬取的期刊内容数据>>");
+            log.info("<<----没有待爬取的期刊内容数据--->>");
             return;
         }
 

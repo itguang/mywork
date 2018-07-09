@@ -17,7 +17,7 @@ public class SpJedisPoolConfig {
 
     int port = 6379;
 
-    int timeout = 24 * 60 * 60 * 1000;
+    int timeout = 7*24 * 60 * 60 * 1000;
 
     String password;
 

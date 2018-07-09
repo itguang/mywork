@@ -2,6 +2,7 @@ package com.libstar.kb.spider.sp.cspd.entity;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,6 +55,12 @@ public class YearTreeEntity {
     private String pivot;
     @SerializedName("pid")
     private String pid;
+
+    /**
+     * 标记此期刊号对应内容数据是否入库
+     */
+    @SerializedName("flag")
+    private Integer flag;
 
 
 }

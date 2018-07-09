@@ -45,7 +45,7 @@ public class PerioContentProcessor implements PageProcessor {
 
     private static volatile boolean hasMore = true;
 
-    private Site site = Site.me().setRetryTimes(5).setTimeOut(8000).setSleepTime(1000);
+    private Site site = Site.me().setRetryTimes(5).setTimeOut(20000).setSleepTime(2000);
 
 
     @Autowired
@@ -59,7 +59,7 @@ public class PerioContentProcessor implements PageProcessor {
     @Override
     public Site getSite() {
         //该机制会将下载失败的url重新放入队列尾部重试，直到达到重试次数，以保证不因为某些网络原因漏抓页面。
-        return site.setCycleRetryTimes(3);
+        return site.setCycleRetryTimes(10);
     }
 
 
